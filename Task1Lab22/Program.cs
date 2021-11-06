@@ -22,29 +22,34 @@ namespace Task1Lab22
                 Console.Write($"{array[i]} ");
             }
             Console.WriteLine();
-            Func<int[], int, int> func = new Func<int[], int, int>(Summa);
-            Task<int> task = new Task<int>(func);            
-            //Summa(array, n);
-            MaxArray(array);
+            Func<object, int> func = new Func<object, int>(Summa);
+            Task<int> task = new Task<int>(func,array);
+            //int s = task.Result;            
+            Func<object, int> func1 = new Func<object, int>(MaxArray);
+            Task<int> task1 = new Task<int>(func1, array);
+            //Task task2 = task.ContinueWith(func1);
+            task.Start();
+            task1.Start();            
             Console.ReadKey();
         }
-        static int Summa(int[] array,int n)
+        static int Summa(object array_)
         {
-            
+            int[] array = (int[])array_;
             int S = 0;
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 S += array[i];
             }
             Console.WriteLine($"Сумма чисел: {S}");
             return S;
         }
-        static int MaxArray(int[] array)
+        static int MaxArray(object array_)
         {
+            int[] array = (int[])array_;
             int max = array[0];
             foreach (int a in array)
             {
-                if (a>max)
+                if (a > max)
                 {
                     max = a;
                 }
